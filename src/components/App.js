@@ -8,6 +8,9 @@ import api from '../utils/api.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup ';
+import Registr from './Registr';
+import Login from './Login';
+import InfoTooltip from './InfoTooltip';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
@@ -138,6 +141,10 @@ function App() {
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddNewCard={handleAddPlaceSubmit} />
         <PopupWithForm title="Вы уверены?" name="delete" buttonText="Да" />
+        
+        <Registr />
+        <Login />
+        <InfoTooltip />
 
         {selectedCard && <ImagePopup card={selectedCard} onClose={closeAllPopups} />}
       </div>

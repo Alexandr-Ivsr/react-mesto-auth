@@ -1,0 +1,23 @@
+.form-registr__input {
+	width: 100%;
+	margin-bottom: 18px;
+	padding: 12px 0;
+	font-family: inherit;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 17px;
+	color: #ffffff;
+	border: none;
+	border-bottom: 2px solid #CCCCCC;
+	background-color: #000000;
+	outline: none;
+	transition: .2s border-color ease-in-out;
+}
+
+.form-registr__input::placeholder {
+	color: #CCCCCC;
+}
+
+.form-registr__input:hover, .form-registr__input:focus {
+  border-color: rgba(204, 204, 204, 0.6);
+}

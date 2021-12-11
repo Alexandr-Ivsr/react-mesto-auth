@@ -1,0 +1,13 @@
+.form-registr__link {
+	display: block;
+	color: #ffffff;
+	font-size: 14px;
+	line-height: 17px;
+	text-align: center;
+	text-decoration: none;
+ 	transition: .2s all ease-in-out;
+}
+
+.form-registr__link:hover, .form-registr__link:focus {
+  color: rgba(255, 255, 255, 0.6);
+}

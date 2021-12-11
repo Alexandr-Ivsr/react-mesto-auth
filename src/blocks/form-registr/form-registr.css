@@ -1,0 +1,14 @@
+.form-registr {
+	width: 418px;
+	max-width: 100%;
+	margin: 0 auto;
+	padding: 40px 30px;
+	background-color: #000000;
+	box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .form-registr {
+    padding: 60px 30px 80px;
+  }
+}
