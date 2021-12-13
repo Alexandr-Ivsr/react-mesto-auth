@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -11,6 +12,7 @@ import AddPlacePopup from './AddPlacePopup ';
 import Registr from './Registr';
 import Login from './Login';
 import InfoTooltip from './InfoTooltip';
+import RequireAuth from './RequireAuth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({name: '', about: ''});
   const [cards, setCards] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(true);
 
   useEffect(() => {
     api.getProfileData()
@@ -126,27 +129,39 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
-        <Main
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onCardClick={handleCardClick}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          onAddPlace={handleAddPlaceClick}
-        />
+        <Routes>
+          <Route path="/"
+            element={
+              <RequireAuth
+                component={Main}
+                loggedIn={loggedIn}
+                cards={cards}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+                onCardClick={handleCardClick}
+                onEditAvatar={handleEditAvatarClick}
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}>
+              </RequireAuth>
+            }>
+          </Route>
+          
+          {/* <Route path="/footer" element={<Footer />}/> */}
+          <Route path="/sign-up" element={<Registr />}/>
+          <Route path="/sign-in" element={<Login />}/>
+
+        </Routes>
         <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}  />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddNewCard={handleAddPlaceSubmit} />
         <PopupWithForm title="Вы уверены?" name="delete" buttonText="Да" />
-        
-        <Registr />
-        <Login />
-        <InfoTooltip />
 
         {selectedCard && <ImagePopup card={selectedCard} onClose={closeAllPopups} />}
+
+        <InfoTooltip />
+
       </div>
     </CurrentUserContext.Provider>
   );
