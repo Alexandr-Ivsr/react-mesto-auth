@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api.js';
+import * as auth from '../auth.js'
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup ';
@@ -19,10 +20,13 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = useState(false);
+  const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
+  const [isRegisterSuccess, setIsRegisterSuccess] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({name: '', about: ''});
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api.getProfileData()
@@ -117,11 +121,27 @@ function App() {
         console.log(error);
       })
   };
+  // Регистрация
+  const handleUserRegister = (data) => {
+    auth.register(data)
+      .then((res) => {
+        navigate("/sign-in");
+        setIsRegisterSuccess(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsRegisterSuccess(false);
+      })
+      .finally(() => {
+        setInfoTooltipPopupOpen(true);
+      })
+  }
 
   const closeAllPopups = () => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
+    setInfoTooltipPopupOpen(false);
     setSelectedCard(null);
   }
 
@@ -146,8 +166,7 @@ function App() {
             }>
           </Route>
           
-          {/* <Route path="/footer" element={<Footer />}/> */}
-          <Route path="/sign-up" element={<Registr />}/>
+          <Route path="/sign-up" element={<Registr onRegister={handleUserRegister} />}/>
           <Route path="/sign-in" element={<Login />}/>
 
         </Routes>
@@ -160,7 +179,7 @@ function App() {
 
         {selectedCard && <ImagePopup card={selectedCard} onClose={closeAllPopups} />}
 
-        <InfoTooltip />
+        <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isRegisterSuccess} />
 
       </div>
     </CurrentUserContext.Provider>

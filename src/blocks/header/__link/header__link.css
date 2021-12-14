@@ -7,7 +7,7 @@
 	transition: .2s all ease-in-out;
 }
 
-.header__link:hover, .header__link:focus {
+.header__link:hover {
   color: rgba(255, 255, 255, 0.6);
 }
 
