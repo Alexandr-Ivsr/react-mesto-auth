@@ -1,18 +1,12 @@
 .header__user-information {
-	margin: 40px 0 18px;
 	font-weight: 500;
 	font-size: 18px;
 	line-height: 22px;
-	max-width: 142px;
-
 }
 
 @media (min-width: 768px) {
 	.header__user-information {
 		margin: 0 24px 0 0;
-		font-weight: 500;
-		font-size: 18px;
-		line-height: 22px;
 		max-width: 250px;
     overflow: hidden;
     text-overflow: ellipsis;
