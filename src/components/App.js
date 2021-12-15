@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
-import Footer from './Footer';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api.js';
@@ -206,22 +205,16 @@ function App() {
               </RequireAuth>
             }>
           </Route>
-          
           <Route path="/sign-up" element={<Registr onRegister={handleUserRegister} />}/>
           <Route path="/sign-in" element={<Login onAuthorization={handleUserAuth} />}/>
-
         </Routes>
-        <Footer />
 
         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}  />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddNewCard={handleAddPlaceSubmit} />
         <PopupWithForm title="Вы уверены?" name="delete" buttonText="Да" />
-
         {selectedCard && <ImagePopup card={selectedCard} onClose={closeAllPopups} />}
-
         <InfoTooltip isOpen={isInfoTooltipPopupOpen} onClose={closeAllPopups} isSuccess={isRequestSuccess} />
-
       </div>
     </CurrentUserContext.Provider>
   );

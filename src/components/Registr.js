@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function Registr(props) {
   const [emailValue, setEmailValue] = useState('');
   const [passwordValue, setPasswordValue] = useState('');
-  const navigate = useNavigate();
 
   const handleChangeEmail = (evt) => {
     setEmailValue(evt.target.value);
