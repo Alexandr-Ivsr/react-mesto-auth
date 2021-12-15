@@ -1,0 +1,14 @@
+.form-registr__title {
+  margin: 0 0 40px;
+  color: #FFFFFF;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 29px;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .form-registr__title {
+    margin: 0 0 50px;
+  }
+}

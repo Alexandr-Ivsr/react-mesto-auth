@@ -1,0 +1,9 @@
+.header__wrapper {
+	display: block;
+}
+
+@media (min-width: 768px) {
+	.header__wrapper {
+		display: flex;
+	}
+}
