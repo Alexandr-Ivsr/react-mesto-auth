@@ -1,21 +1,25 @@
 export const BASE_URL = 'https://auth.nomoreparties.co/';
 
+const checkResponse = (res) => {
+	if (res.ok) {
+		return res.json();
+	}
+	else {
+		return Promise.reject(`Ошибка: ${res.status}`);
+	}
+}
+
 // регистрация, отправляем данные юзера
-export const register = ({email, password}) => {
+export const register = ({ email, password }) => {
 	return fetch(`${BASE_URL}signup`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify({email, password})
+		body: JSON.stringify({ email, password })
 	})
 		.then((res) => {
-			if (res.ok) {
-				return res.json();
-			}
-			else {
-				return Promise.reject(`Ошибка: ${res.status}`);
-			}
+			return checkResponse(res);
 		})
 };
 
@@ -28,14 +32,9 @@ export const authorization = (data) => {
 		},
 		body: JSON.stringify(data)
 	})
-	.then((res) => {
-		if (res.ok) {
-			return res.json();
-		}
-		else {
-			return Promise.reject(`Ошибка: ${res.status}`);
-		}
-	})
+		.then((res) => {
+			return checkResponse(res);
+		})
 };
 
 // проверка токена для входа
@@ -44,15 +43,10 @@ export const checkToken = (token) => {
 		method: 'GET',
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization" : `Bearer ${token}`,
+			"Authorization": `Bearer ${token}`,
 		},
 	})
-	.then((res) => {
-		if (res.ok) {
-			return res.json();
-		}
-		else {
-			return Promise.reject(`Ошибка: ${res.status}`);
-		}
-	})
+		.then((res) => {
+			return checkResponse(res);
+		})
 }
