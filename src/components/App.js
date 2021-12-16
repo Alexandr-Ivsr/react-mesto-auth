@@ -70,11 +70,11 @@ function App() {
         closeAllPopups();
       }
     }
-
+    
     document.addEventListener('keydown', closeByEsc);
 
-    return () => document.removeEventListener('')
-  })
+    return () => document.removeEventListener('keydown', closeByEsc);
+  }, []);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
