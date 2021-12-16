@@ -5,7 +5,7 @@ import Main from './Main';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from '../utils/api.js';
-import * as auth from '../auth.js'
+import * as auth from '../utils/auth.js'
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup ';
@@ -63,6 +63,18 @@ function App() {
         })
     }
   }, []);
+
+  useEffect(() => {
+    const closeByEsc = (evt) => {
+      if (evt.key === 'Escape') {
+        closeAllPopups();
+      }
+    }
+
+    document.addEventListener('keydown', closeByEsc);
+
+    return () => document.removeEventListener('')
+  })
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
@@ -154,7 +166,7 @@ function App() {
   }
   // Авторизация, отправка данных
   const handleUserAuth = (data) => {
-    let userEmail = data.email;
+    const userEmail = data.email;
     auth.authorization(data)
       .then((res) => {
         if (res.token) {
