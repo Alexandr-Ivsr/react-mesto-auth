@@ -22,26 +22,16 @@ function App() {
   const [isInfoTooltipPopupOpen, setInfoTooltipPopupOpen] = useState(false);
   const [isRequestSuccess, setIsRequestSuccess] = useState(false);
   const [selectedCard, setSelectedCard] = useState(null);
-  const [currentUser, setCurrentUser] = useState({name: '', about: ''});
+  const [currentUser, setCurrentUser] = useState({ name: '', about: '' });
   const [cards, setCards] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [emailUser, setEmailUser] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.getProfileData()
-      .then((res) => {
-        setCurrentUser(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }, []);
-
-  useEffect(() => {
     api.getCardsData()
       .then((res) => {
-        setCards(res);
+        setCards(res.reverse());
       })
       .catch((error) => {
         console.log(error);
@@ -50,18 +40,16 @@ function App() {
 
   // проверка токена при загрузке страницы
   useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt');
-      auth.checkToken(jwt)
-        .then((res) => {
-          setLoggedIn(true);
-          setEmailUser(res.data.email);
-          navigate("/");
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-    }
+    auth.checkToken()
+      .then((res) => {
+        setLoggedIn(true);
+        setCurrentUser(res);
+        setEmailUser(res.email);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }, []);
 
   useEffect(() => {
@@ -70,15 +58,15 @@ function App() {
         closeAllPopups();
       }
     }
-    
+
     document.addEventListener('keydown', closeByEsc);
 
     return () => document.removeEventListener('keydown', closeByEsc);
   }, []);
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-
+    const isLiked = card.likes.some(i => i === currentUser._id);
+    console.log('fsdfsdfsdf');
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -89,7 +77,7 @@ function App() {
   };
 
   function handleCardDelete(card) {
-    const isOwn = card.owner._id === currentUser._id;
+    const isOwn = card.owner === currentUser._id;
 
     api.deleteCardData(card._id, isOwn)
       .then(() => {
@@ -169,12 +157,10 @@ function App() {
     const userEmail = data.email;
     auth.authorization(data)
       .then((res) => {
-        if (res.token) {
-          localStorage.setItem('jwt', res.token);
-          setLoggedIn(true);
-          setEmailUser(userEmail);
-          navigate("/");
-        }
+        setLoggedIn(true);
+        setCurrentUser(res);
+        setEmailUser(userEmail);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -185,8 +171,13 @@ function App() {
 
   // удаление токена, выход из профиля юзера
   const handleLogOut = () => {
-    localStorage.removeItem('jwt');
-    setLoggedIn(false);
+    auth.logOut()
+      .then((res) => {
+        setLoggedIn(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
   }
 
   const closeAllPopups = () => {
@@ -217,11 +208,11 @@ function App() {
               </RequireAuth>
             }>
           </Route>
-          <Route path="/sign-up" element={<Registr onRegister={handleUserRegister} />}/>
-          <Route path="/sign-in" element={<Login onAuthorization={handleUserAuth} />}/>
+          <Route path="/sign-up" element={<Registr onRegister={handleUserRegister} />} />
+          <Route path="/sign-in" element={<Login onAuthorization={handleUserAuth} />} />
         </Routes>
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}  />
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddNewCard={handleAddPlaceSubmit} />
         <PopupWithForm title="Вы уверены?" name="delete" buttonText="Да" />
