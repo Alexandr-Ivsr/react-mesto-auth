@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://api.project-mesto.nomoredomains.xyz/';
+export const BASE_URL = 'http://api.project.mesto.nomoredomains.work';
 
 const checkResponse = (res) => {
   if (res.ok) {
@@ -11,7 +11,7 @@ const checkResponse = (res) => {
 
 // регистрация, отправляем данные юзера
 export const register = ({ email, password }) => {
-  return fetch(`${BASE_URL}signup`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const register = ({ email, password }) => {
 
 // авторизация
 export const authorization = (data) => {
-  return fetch(`${BASE_URL}signin`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -40,7 +40,7 @@ export const authorization = (data) => {
 
 // проверка токена для входа
 export const checkToken = () => {
-  return fetch(`${BASE_URL}users/me`, {
+  return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -54,7 +54,7 @@ export const checkToken = () => {
 
 // выход юзера, очищение куков
 export const logOut = () => {
-  return fetch(`${BASE_URL}signout`, {
+  return fetch(`${BASE_URL}/signout`, {
     method: 'GET',
     credentials: 'include',
     headers: {
