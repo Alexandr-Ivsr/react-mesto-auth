@@ -29,14 +29,16 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    api.getCardsData()
-      .then((res) => {
-        setCards(res.reverse());
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (loggedIn) {
+      api.getCardsData()
+        .then((res) => {
+          setCards(res.reverse());
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [loggedIn]);
 
   // проверка токена при загрузке страницы
   useEffect(() => {
@@ -66,7 +68,6 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i === currentUser._id);
-    console.log('fsdfsdfsdf');
     api.changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
@@ -171,13 +172,15 @@ function App() {
 
   // удаление токена, выход из профиля юзера
   const handleLogOut = () => {
-    auth.logOut()
-      .then((res) => {
-        setLoggedIn(false);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    if (loggedIn) {
+      auth.logOut()
+        .then((res) => {
+          setLoggedIn(false);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
   }
 
   const closeAllPopups = () => {
