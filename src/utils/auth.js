@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://api.project.mesto.nomoredomains.work';
+export const BASE_URL = 'https://api.project.mesto.nomoredomains.work';
 
 const checkResponse = (res) => {
   if (res.ok) {
