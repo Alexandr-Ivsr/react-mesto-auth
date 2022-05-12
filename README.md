@@ -27,6 +27,9 @@ npm run start
 ```
 ### Системные требования:
 Для запуска проекта понадобится `Node.js` версии 16.13.1 или выше
+
+### Бэкенд-часть приложения:
+https://github.com/Alexandr-Ivsr/react-mesto-api-full
 ___
 ## Ссылка на сайт:
 https://project.mesto.nomoredomains.work
